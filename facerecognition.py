@@ -71,6 +71,7 @@ class FaceRecognition:
             
         self.people = set(self.known_face_names)
         print(self.people)
+        print('Press S to save last frame')
 
     
 
