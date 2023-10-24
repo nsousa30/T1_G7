@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 import math
 import copy
+import random
 
 def face_confidence(face_distance, face_match_threshold=0.6):
     range = (1.0 - face_match_threshold)
@@ -53,7 +54,8 @@ class FaceRecognition:
     known_face_names = []
     process_current_frame = True
     people = []
-
+    tracks = {}
+    color = {}
     def __init__(self):
         self.encode_faces()
 
@@ -106,7 +108,6 @@ class FaceRecognition:
 
                     self.face_names.append(f'{name}')
 
-            self.process_current_frame = not self.process_current_frame
 
             for(top, right, bottom, left), name in zip(self.face_locations, self.face_names):
                 top *= 4
@@ -114,10 +115,15 @@ class FaceRecognition:
                 bottom *=4
                 left *= 4
 
-                cv2.rectangle(frame,(left,top),(right,bottom),(0,0,255),2)
-                cv2.rectangle(frame, (left, bottom - 35), (right,bottom),(0,0,255), -1)
+                if not name in self.color:
+                    self.color[name] =(random.randint(0, 255),random.randint(0, 255),random.randint(0, 255))
+                cv2.rectangle(frame,(left,top),(right,bottom),self.color[name],2)
+                cv2.rectangle(frame, (left, bottom - 25), (right,bottom),self.color[name], -1)
                 cv2.putText(frame, name, (left + 6, bottom - 6),cv2.FONT_HERSHEY_DUPLEX,0.8,(255,255,255),1)
 
+                self.tracks[name] = top, right, bottom, left, 1
+
+                print(self.tracks)
             cv2.imshow('Face Recognition', frame)
             
             if cv2.waitKey(1) == ord('q'):
