@@ -108,6 +108,23 @@ class FaceRecognition:
 
                     self.face_names.append(f'{name}')
 
+            for name in self.tracks:
+                if not name in self.face_names and True in self.tracks[name]:
+                   last_gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                   mask = last_gray_frame[self.tracks[name][0]:self.tracks[name][2],self.tracks[name][3]:self.tracks[name][1]]
+                   result = cv2.matchTemplate(last_gray_frame,mask, cv2.TM_CCOEFF_NORMED)
+
+                   _, _, _, max_loc = cv2.minMaxLoc(result)
+                   h,w= mask.shape
+                   print(mask.shape)
+                   cv2.imshow('mask',mask)
+                   
+                   cv2.rectangle(frame, (max_loc[0],max_loc[1]),(max_loc[0]+w, max_loc[1]+h),self.color[name],2)
+                   cv2.rectangle(frame, (max_loc[0],max_loc[1]+h-25),(max_loc[0]+w, max_loc[1]+h),self.color[name],-1)
+                   cv2.putText(frame, f'{name}*', (max_loc[0] + 6, max_loc[1] + h - 6),cv2.FONT_HERSHEY_DUPLEX,0.8,(255,255,255),1)
+
+                   
+                       
 
             for(top, right, bottom, left), name in zip(self.face_locations, self.face_names):
                 top *= 4
@@ -121,7 +138,8 @@ class FaceRecognition:
                 cv2.rectangle(frame, (left, bottom - 25), (right,bottom),self.color[name], -1)
                 cv2.putText(frame, name, (left + 6, bottom - 6),cv2.FONT_HERSHEY_DUPLEX,0.8,(255,255,255),1)
 
-                self.tracks[name] = top, right, bottom, left, 1
+                self.tracks[name] = top, right, bottom, left, True
+
 
                 print(self.tracks)
             cv2.imshow('Face Recognition', frame)
