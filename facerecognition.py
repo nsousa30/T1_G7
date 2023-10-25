@@ -110,13 +110,14 @@ class FaceRecognition:
 
             for name in self.tracks:
                 if not name in self.face_names and True in self.tracks[name]:
-                   last_gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                   last_gray_frame = cv2.cvtColor(last_frame, cv2.COLOR_BGR2GRAY)
                    mask = last_gray_frame[self.tracks[name][0]:self.tracks[name][2],self.tracks[name][3]:self.tracks[name][1]]
-                   result = cv2.matchTemplate(last_gray_frame,mask, cv2.TM_CCOEFF_NORMED)
+                   gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                   result = cv2.matchTemplate(gray_frame,mask, cv2.TM_CCOEFF_NORMED)
 
                    _, _, _, max_loc = cv2.minMaxLoc(result)
                    h,w= mask.shape
-                   print(mask.shape)
+                   print(max_loc)
                    cv2.imshow('mask',mask)
                    
                    cv2.rectangle(frame, (max_loc[0],max_loc[1]),(max_loc[0]+w, max_loc[1]+h),self.color[name],2)
@@ -140,8 +141,11 @@ class FaceRecognition:
 
                 self.tracks[name] = top, right, bottom, left, True
 
+                last_frame = img
 
                 print(self.tracks)
+
+            
             cv2.imshow('Face Recognition', frame)
             
             if cv2.waitKey(1) == ord('q'):
