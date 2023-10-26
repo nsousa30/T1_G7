@@ -7,6 +7,7 @@ import math
 import copy
 import random
 import time
+from speech import Speech
 
 def face_confidence(face_distance, face_match_threshold=0.6):
     range = (1.0 - face_match_threshold)
@@ -177,13 +178,17 @@ class FaceRecognition:
 
                 print(self.tracks)
 
-            
             cv2.imshow('Face Recognition', frame)
-            
+
             if cv2.waitKey(1) == ord('q'):
                 break
             if cv2.waitKey(1) == ord('s'):
-                savephoto(img, video_capture)     
+                savephoto(img, video_capture)    
+
+            time.sleep(1)
+            sp = Speech(self.tracks)
+            sp.run() 
+
         video_capture.release()
         cv2.destroyAllWindows()
     
