@@ -185,7 +185,6 @@ class FaceRecognition:
             if cv2.waitKey(1) == ord('s'):
                 savephoto(img, video_capture)    
 
-            time.sleep(1)
             sp = Speech(self.tracks)
             sp.run() 
 
