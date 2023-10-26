@@ -3,21 +3,10 @@ import face_recognition
 import os, sys
 import cv2
 import numpy as np
-import math
 import copy
 import random
 import time
 from speech import Speech
-
-def face_confidence(face_distance, face_match_threshold=0.6):
-    range = (1.0 - face_match_threshold)
-    linear_val = (1.0 - face_distance) / (range * 2.0)
-
-    if face_distance > face_match_threshold:
-        return str(round(linear_val * 100, 2))+'%'
-    else:
-        value = (linear_val +((1.0 - linear_val) * math.pow((linear_val - 0.5) * 2, 0.2))) * 100
-        return str(round(value,2)) + '%'
     
 def savephoto(frame, video_capture):
     
@@ -88,6 +77,8 @@ class FaceRecognition:
             sys.exit('Video source not found...')
         start_time = None
         last_max_loc = None
+        dif_max_loc_0 = 0
+        dif_max_loc_1 = 0
         while True:
             ret, frame = video_capture.read()
 
