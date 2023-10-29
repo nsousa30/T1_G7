@@ -1,0 +1,5 @@
+numpy
+Click
+dlib
+face_recognition
+gTTS
