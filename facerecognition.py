@@ -34,8 +34,8 @@ def savephoto(frame, video_capture):
             print(f"Photo saved as {filename}")
             video_capture.release()
             cv2.destroyAllWindows()
-            fr = FaceRecognition()
-            fr.run_recognition()
+            python_script = "main.py"
+            os.system(f"python3 {python_script}")
     
 class FaceRecognition:
     face_locations = []
@@ -54,14 +54,19 @@ class FaceRecognition:
     def encode_faces(self):
         for image in os.listdir('faces'):
             face_image = face_recognition.load_image_file(f'faces/{image}')
-            face_encoding = face_recognition.face_encodings(face_image)[0]
+            face_encodings = face_recognition.face_encodings(face_image)
 
-            self.known_face_encodings.append(face_encoding)
-            name_without_extension = os.path.splitext(image)[0]
-            name = name_without_extension.split('_')[0]
+            if face_encodings:
+                
+                face_encoding = face_encodings[0]
 
-            self.known_face_names.append(name)
-            
+                self.known_face_encodings.append(face_encoding)
+                name_without_extension = os.path.splitext(image)[0]
+                name = name_without_extension.split('_')[0]
+
+                self.known_face_names.append(name)
+            else:
+                print(f"No faces detected in the image: {image}")
             
         self.people = set(self.known_face_names)
         print(self.people)
@@ -114,39 +119,39 @@ class FaceRecognition:
                 
             for name in self.tracks:
                 if not name in self.face_names and True in self.tracks[name]:
-                    last_gray_frame = cv2.cvtColor(last_frame, cv2.COLOR_BGR2GRAY)
-                    mask = last_gray_frame[self.tracks[name][0]:self.tracks[name][2],self.tracks[name][3]:self.tracks[name][1]]
-                    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                    result = cv2.matchTemplate(gray_frame,mask, cv2.TM_CCOEFF_NORMED)
+                        last_gray_frame = cv2.cvtColor(last_frame, cv2.COLOR_BGR2GRAY)
+                        mask = last_gray_frame[self.tracks[name][0]:self.tracks[name][2],self.tracks[name][3]:self.tracks[name][1]]
+                        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                        result = cv2.matchTemplate(gray_frame,mask, cv2.TM_CCOEFF_NORMED)
 
-                    _, _, _, max_loc = cv2.minMaxLoc(result)
-                    h,w= mask.shape
-                    
-                    if last_max_loc == None:
+                        _, _, _, max_loc = cv2.minMaxLoc(result)
+                        h,w= mask.shape
+                        
+                        if last_max_loc == None:
+                            start_time = time.time()
+                            last_max_loc = max_loc
+                            
+                            
+                        end_time = time.time()
+
+                        dif_time = end_time -start_time
+
+                        if dif_time > 0: 
+                            dif_max_loc_0 = abs(max_loc[0] - last_max_loc[0]) / dif_time
+                            dif_max_loc_1 = abs(max_loc[1] - last_max_loc[1]) / dif_time
+
+                        print(dif_max_loc_0)
+                        print(dif_max_loc_1)
+                        if (dif_max_loc_0 > 1000 or dif_max_loc_1 > 1000):
+                            self.tracks[name][4] = False
+                            last_max_loc = None
+                        
+                            continue
                         start_time = time.time()
                         last_max_loc = max_loc
-                        
-                        
-                    end_time = time.time()
-
-                    dif_time = end_time -start_time
-
-                    if dif_time > 0: 
-                        dif_max_loc_0 = abs(max_loc[0] - last_max_loc[0]) / dif_time
-                        dif_max_loc_1 = abs(max_loc[1] - last_max_loc[1]) / dif_time
-
-                    print(dif_max_loc_0)
-                    print(dif_max_loc_1)
-                    if (dif_max_loc_0 > 1000 or dif_max_loc_1 > 1000):
-                        self.tracks[name][4] = False
-                        last_max_loc = None
-                    
-                        continue
-                    start_time = time.time()
-                    last_max_loc = max_loc
-                    cv2.rectangle(frame, (max_loc[0],max_loc[1]),(max_loc[0]+w, max_loc[1]+h),self.color[name],2)
-                    cv2.rectangle(frame, (max_loc[0],max_loc[1]+h-25),(max_loc[0]+w, max_loc[1]+h),self.color[name],-1)
-                    cv2.putText(frame, f'{name}', (max_loc[0] + 6, max_loc[1] + h - 6),cv2.FONT_HERSHEY_DUPLEX,0.8,(255,255,255),1)
+                        cv2.rectangle(frame, (max_loc[0],max_loc[1]),(max_loc[0]+w, max_loc[1]+h),self.color[name],2)
+                        cv2.rectangle(frame, (max_loc[0],max_loc[1]+h-25),(max_loc[0]+w, max_loc[1]+h),self.color[name],-1)
+                        cv2.putText(frame, f'{name}', (max_loc[0] + 6, max_loc[1] + h - 6),cv2.FONT_HERSHEY_DUPLEX,0.8,(255,255,255),1)
 
                    
                        
