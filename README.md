@@ -4,7 +4,7 @@
 ## Sobre o Projeto
 
 Este projeto foi desenvolvido para o primeiro trabalho da disciplina Sistemas Avançados de Visão Industrial. Tem como objetivo detetar diferentes caras e através de uma base de dados dizer se é uma cara conhecida ou desconhecida.
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 ## Para começar
 
@@ -22,7 +22,6 @@ Para instalar todas as dependencias, é só correr no terminal:
 pip install -r requirements.txt
 ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ##Execução
 (Aqui é preciso descrever como funciona, eu não sei tão bem quanto vocês)
