@@ -22,7 +22,7 @@ class Speech:
                     tts.save(file_path)
                 
                 self.already_called.add(name)
-                print(f"Already called: {self.already_called}")
+                
                
                 os.system(f"mpg123 {file_path}")
 
@@ -39,7 +39,7 @@ class Speech:
 
                 
                 self.already_called.add(name)
-                print(f"Already called: {self.already_called}")
+                
 
                
                 os.system(f"mpg123 {file_path}")

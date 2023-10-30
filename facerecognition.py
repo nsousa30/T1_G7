@@ -146,8 +146,6 @@ class FaceRecognition:
                             dif_max_loc_0 = abs(max_loc[0] - self.tracks[name][7][0]) / dif_time
                             dif_max_loc_1 = abs(max_loc[1] - self.tracks[name][7][1]) / dif_time
 
-                        print(dif_max_loc_0)
-                        print(dif_max_loc_1)
 
                         if (dif_max_loc_0 > 1000 or dif_max_loc_1 > 1000):
                             self.tracks[name][4] = False
