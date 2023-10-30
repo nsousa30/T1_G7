@@ -7,6 +7,8 @@ import copy
 import random
 import time
 from speech import Speech
+import threading
+import multiprocessing
     
 def savephoto(frame, video_capture):
     
@@ -181,8 +183,9 @@ class FaceRecognition:
             if cv2.waitKey(1) == ord('s'):
                 savephoto(img, video_capture)    
 
-            sp = Speech(self.tracks)
-            sp.run() 
+            new_instance_process = multiprocessing.Process(target=Speech(self.tracks).run())
+            new_instance_process.start()
+            new_instance_process.join()
 
         video_capture.release()
         cv2.destroyAllWindows()
