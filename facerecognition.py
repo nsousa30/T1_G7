@@ -82,8 +82,9 @@ class FaceRecognition:
 
     def run_recognition(self):
         video_capture = cv2.VideoCapture(0)
-        i = 1
-
+        start_time = 0
+        end_time= time.time()
+        
         if not video_capture.isOpened():
             sys.exit('Video source not found...')
    
@@ -186,9 +187,16 @@ class FaceRecognition:
                 break
             if cv2.waitKey(1) == ord('s'):
                 savephoto(img, video_capture)    
-            sp_thread = threading.Thread(target=sp, args=(self.tracks,))
-            sp_thread.start()
-
+            end_time = time.time()
+            dif_time = end_time - start_time
+            if dif_time > 2:
+                sp_thread = threading.Thread(target=sp, args=(self.tracks,))
+                sp_thread.start()
+                start_time = time.time()
+            
+            
+            
+            
         video_capture.release()
         cv2.destroyAllWindows()
     
