@@ -8,7 +8,7 @@ import random
 import time
 from speech import Speech
 import threading
-import multiprocessing
+
     
 def savephoto(frame, video_capture):
     
@@ -38,6 +38,10 @@ def savephoto(frame, video_capture):
             cv2.destroyAllWindows()
             python_script = "main.py"
             os.system(f"python3 {python_script}")
+
+def sp(tracks):
+    s=Speech(tracks)
+    s.run()
     
 class FaceRecognition:
     face_locations = []
@@ -78,12 +82,11 @@ class FaceRecognition:
 
     def run_recognition(self):
         video_capture = cv2.VideoCapture(0)
-        last_max_loc = None
+        i = 1
 
         if not video_capture.isOpened():
             sys.exit('Video source not found...')
-        start_time = None
-        last_max_loc = None
+   
         dif_max_loc_0 = 0
         dif_max_loc_1 = 0
         while True:
@@ -96,7 +99,7 @@ class FaceRecognition:
                     if True in self.tracks[name]:
                         frame_cut[self.tracks[name][0]:self.tracks[name][2],self.tracks[name][3]:self.tracks[name][1]] = 0
                     
-                cv2.imshow('Teste', frame_cut)
+               
                 small_frame = cv2.resize(frame_cut, (0,0), fx=0.25, fy=0.25)
                 rgb_small_frame = small_frame[:,:,::+1]
                 
@@ -183,10 +186,8 @@ class FaceRecognition:
                 break
             if cv2.waitKey(1) == ord('s'):
                 savephoto(img, video_capture)    
-
-            new_instance_process = multiprocessing.Process(target=Speech(self.tracks).run())
-            new_instance_process.start()
-            new_instance_process.join()
+            sp_thread = threading.Thread(target=sp, args=(self.tracks,))
+            sp_thread.start()
 
         video_capture.release()
         cv2.destroyAllWindows()
