@@ -1,6 +1,6 @@
 from gtts import gTTS
 import os
-import time
+
 
 class Speech:
     already_called = set()
@@ -20,13 +20,14 @@ class Speech:
                 if not os.path.exists(file_path):
                     tts = gTTS(text)
                     tts.save(file_path)
-
-                # Play the audio file
-                os.system(f"mpg123 {file_path}")
-
-                # Append name to names already called
+                
                 self.already_called.add(name)
                 print(f"Already called: {self.already_called}")
+               
+                os.system(f"mpg123 {file_path}")
+
+               
+                
 
             elif name not in self.already_called and name == "Unknown":
                 text = "Hello Stranger"
@@ -36,12 +37,14 @@ class Speech:
                     tts = gTTS(text)
                     tts.save(file_path)
 
-                # Play the audio file
-                os.system(f"mpg123 {file_path}")
-
-                # Append name to names already called
+                
                 self.already_called.add(name)
                 print(f"Already called: {self.already_called}")
+
+               
+                os.system(f"mpg123 {file_path}")
+
+                
             
             else:
                 pass
