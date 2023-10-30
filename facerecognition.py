@@ -94,7 +94,7 @@ class FaceRecognition:
                     if True in self.tracks[name]:
                         frame_cut[self.tracks[name][0]:self.tracks[name][2],self.tracks[name][3]:self.tracks[name][1]] = 0
                     
-                
+                cv2.imshow('Teste', frame_cut)
                 small_frame = cv2.resize(frame_cut, (0,0), fx=0.25, fy=0.25)
                 rgb_small_frame = small_frame[:,:,::+1]
                 
@@ -127,28 +127,29 @@ class FaceRecognition:
                         _, _, _, max_loc = cv2.minMaxLoc(result)
                         h,w= mask.shape
                         
-                        if last_max_loc == None:
-                            start_time = time.time()
-                            last_max_loc = max_loc
+                        if self.tracks[name][7] == None:
+                            self.tracks[name][5] = time.time() #start
+                            self.tracks[name][7] = max_loc #last loc
                             
                             
-                        end_time = time.time()
+                        self.tracks[name][6] = time.time() #end
 
-                        dif_time = end_time -start_time
+                        dif_time = self.tracks[name][6] - self.tracks[name][5]
 
                         if dif_time > 0: 
-                            dif_max_loc_0 = abs(max_loc[0] - last_max_loc[0]) / dif_time
-                            dif_max_loc_1 = abs(max_loc[1] - last_max_loc[1]) / dif_time
+                            dif_max_loc_0 = abs(max_loc[0] - self.tracks[name][7][0]) / dif_time
+                            dif_max_loc_1 = abs(max_loc[1] - self.tracks[name][7][1]) / dif_time
 
                         print(dif_max_loc_0)
                         print(dif_max_loc_1)
+
                         if (dif_max_loc_0 > 1000 or dif_max_loc_1 > 1000):
                             self.tracks[name][4] = False
-                            last_max_loc = None
+                            self.tracks[name][7] = None
                         
                             continue
-                        start_time = time.time()
-                        last_max_loc = max_loc
+                        self.tracks[name][5]= time.time()
+                        self.tracks[name][7] = max_loc
                         cv2.rectangle(frame, (max_loc[0],max_loc[1]),(max_loc[0]+w, max_loc[1]+h),self.color[name],2)
                         cv2.rectangle(frame, (max_loc[0],max_loc[1]+h-25),(max_loc[0]+w, max_loc[1]+h),self.color[name],-1)
                         cv2.putText(frame, f'{name}', (max_loc[0] + 6, max_loc[1] + h - 6),cv2.FONT_HERSHEY_DUPLEX,0.8,(255,255,255),1)
@@ -168,7 +169,7 @@ class FaceRecognition:
                 cv2.rectangle(frame, (left, bottom - 25), (right,bottom),self.color[name], -1)
                 cv2.putText(frame, name, (left + 6, bottom - 6),cv2.FONT_HERSHEY_DUPLEX,0.8,(255,255,255),1)
 
-                self.tracks[name] = [top, right, bottom, left, True]
+                self.tracks[name] = [top, right, bottom, left, True, None, None, None]
 
                 last_frame = img
 
