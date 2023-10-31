@@ -145,6 +145,7 @@ class FaceRecognition:
         start_time = 0
         end_time= time.time()
         f_start = time.time()
+        fps = 0
         if not video_capture.isOpened():
             sys.exit('Video source not found...')
    
