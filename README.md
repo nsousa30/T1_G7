@@ -4,7 +4,11 @@
 ## Sobre o Projeto
 
 Este projeto foi desenvolvido para o primeiro trabalho da disciplina Sistemas Avançados de Visão Industrial. Tem como objetivo detetar diferentes caras e através de uma base de dados dizer se é uma cara conhecida ou desconhecida.
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Colaboradores
+- José Duarte
+- Nuno Sousa
+- Sérgio Santos
 
 ## Para começar
 
@@ -22,7 +26,6 @@ Para instalar todas as dependencias, é só correr no terminal:
 pip install -r requirements.txt
 ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Uso
 
@@ -32,3 +35,4 @@ pip install -r requirements.txt
 4. Pressione 'S' para guardar o frame atual com rostos reconhecidos. Será solicitado a inserir o nome da pessoa no frame.
 5. Pressione 'D' para visualizar as fotos guardadas.
 6. O projeto também inclui um recurso de texto para fala. Ele cumprimentará as pessoas reconhecidas pelo nome e os rostos desconhecidos como "Hello Stranger".
+
