@@ -144,7 +144,7 @@ class FaceRecognition:
         video_capture = cv2.VideoCapture(0)
         start_time = 0
         end_time= time.time()
-        
+        f_start = time.time()
         if not video_capture.isOpened():
             sys.exit('Video source not found...')
    
@@ -214,10 +214,13 @@ class FaceRecognition:
                             continue
                         self.tracks[name][5]= time.time()
                         self.tracks[name][7] = max_loc
+                        f_end = time.time()
+                        fps = 1/(f_end -f_start)
+                        f_start = time.time()
                         cv2.rectangle(frame, (max_loc[0],max_loc[1]),(max_loc[0]+w, max_loc[1]+h),self.color[name],2)
                         cv2.rectangle(frame, (max_loc[0],max_loc[1]+h-25),(max_loc[0]+w, max_loc[1]+h),self.color[name],-1)
                         cv2.putText(frame, f'{name}', (max_loc[0] + 6, max_loc[1] + h - 6),cv2.FONT_HERSHEY_DUPLEX,0.8,(255,255,255),1)
-
+                        cv2.putText(frame,f'{str(int(fps))} fps',(10,20),cv2.FONT_HERSHEY_DUPLEX,0.8,(0,255,0),1)
                    
                        
 
@@ -232,6 +235,7 @@ class FaceRecognition:
                 cv2.rectangle(frame,(left,top),(right,bottom),self.color[name],2)
                 cv2.rectangle(frame, (left, bottom - 25), (right,bottom),self.color[name], -1)
                 cv2.putText(frame, name, (left + 6, bottom - 6),cv2.FONT_HERSHEY_DUPLEX,0.8,(255,255,255),1)
+                cv2.putText(frame,f'{str(int(fps))} fps',(10,20),cv2.FONT_HERSHEY_DUPLEX,0.8,(0,255,0),1)
 
                 self.tracks[name] = [top, right, bottom, left, True, None, None, None]
 
@@ -239,6 +243,11 @@ class FaceRecognition:
 
                 print(self.tracks)
 
+            f_end = time.time()
+            fps = 1/(f_end -f_start)
+            f_start = time.time()
+
+            
             cv2.imshow('Face Recognition', frame)
 
             if cv2.waitKey(1) == ord('q'):
