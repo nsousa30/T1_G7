@@ -6,9 +6,9 @@
 Este projeto foi desenvolvido para o primeiro trabalho da disciplina Sistemas Avançados de Visão Industrial. Tem como objetivo detetar diferentes caras e através de uma base de dados dizer se é uma cara conhecida ou desconhecida.
 
 ## Colaboradores
-- José Duarte
-- Nuno Sousa
-- Sérgio Santos
+- José Duarte (josemduarte@ua.pt)
+- Nuno Sousa (nsousa@ua.pt)
+- Sérgio Santos (sergioxsantos@ua.pt)
 
 ## Para começar
 
