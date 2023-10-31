@@ -30,4 +30,5 @@ pip install -r requirements.txt
 2. Execute o script main.py:
 3. O script capturará a transmissão de vídeo da sua webcam e a exibirá. Se um rosto reconhecido for detectado, ele mostrará o nome da pessoa na tela. Se for um rosto desconhecido, será rotulado como "Unknown".
 4. Pressione 'S' para guardar o frame atual com rostos reconhecidos. Será solicitado a inserir o nome da pessoa no frame.
-5. O projeto também inclui um recurso de texto para fala. Ele cumprimentará as pessoas reconhecidas pelo nome e os rostos desconhecidos como "Hello Stranger".
+5. Pressione 'D' para visualizar as fotos guardadas.
+6. O projeto também inclui um recurso de texto para fala. Ele cumprimentará as pessoas reconhecidas pelo nome e os rostos desconhecidos como "Hello Stranger".
